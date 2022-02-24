@@ -2,6 +2,7 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
 const generateMarkdown = require('./utils/generateMarkdown.js');
+const writeFile = require('./utils/generate-readme.js')
 
 const promptUser = () => {
     return inquirer.prompt([
@@ -53,79 +54,9 @@ const promptUser = () => {
 
 promptUser()
 .then(data => {
-    const readme = 
-    `
-<h1 align="center">${data.title}</h1>
-
-<p align="center">
-    <img src="https://img.shields.io/badge/license-${data.license}-blue"/>
-</p>
-
-## Description
-${data.description}
-
-## Table of Contents
-- [Description](#description)
-- [Installation](#installation)
-- [Usage](#usage)
-- [License](#license)
-- [Contributing](#contributing)
-- [Tests](#tests)
-- [Questions](#questions)
-
-## Installation 
-${data.install}
-
-## Usage
-${data.usage}
-
-## License
-This project is covered under the ${data.license} license.
-![badge](https://img.shields.io/badge/license-${data.license}-blue)
-
-## Contributing
-${data.contribute}
-
-## Questions
-Have any questions, comments, or concerns?
-Check me out on GitHub: [${data.github}](https://github.com/${data.github})
-Email me at: 
-
-
-`
-    fs.writeFile('README.md', readme, err => {
-        if (err) {
-            console.log(err)
-        }
-    })
+    return generateMarkdown(data);
+}).then(markdown => {
+    return writeFile(markdown);
+}).then(writeResponse => {
+    console.log(writeResponse.message)
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // TODO: Create an array of questions for user input
-// const questions = [];
-
-// // TODO: Create a function to write README file
-// function writeToFile(fileName, data) {}
-
-// // TODO: Create a function to initialize app
-// function init() {}
-
-// // Function call to initialize app
-// init();
-
-
-
-// THEN a high-quality, professional README.md is generated with the title of my project and sections entitled 
-// Description, Table of Contents, Installation, Usage, License, Contributing, Tests, and Questions
